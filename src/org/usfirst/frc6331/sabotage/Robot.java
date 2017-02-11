@@ -46,6 +46,8 @@ public class Robot extends IterativeRobot {
     Victor rightFrontDrive = new Victor(3);
     Victor rightBackDrive = new Victor(2);
     Victor basketMotor = new Victor(4);
+    Victor liftGate = new Victor(5);
+    Victor winch = new Victor(6);
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -89,13 +91,18 @@ public class Robot extends IterativeRobot {
     	
     	boolean abutton = driveStick.getRawButton(1);
     	boolean bbutton = driveStick.getRawButton(2);
+    	boolean xbutton = driveStick.getRawButton(3);
+    	boolean ybutton = driveStick.getRawButton(4);
+    	boolean leftBump = driveStick.getRawButton(5);
+    	boolean rightBump = driveStick.getRawButton(6);
     	
     	SmartDashboard.putString("DB/String 0", "CurrRight:" + Double.toString(CurrRight));
     	SmartDashboard.putString("DB/String 1", "CurrLeft:" + Double.toString(CurrLeft));
     	SmartDashboard.putString("DB/String 2", "CurrRightTrigger:" + Double.toString(CurrRightTrigger));
     	SmartDashboard.putString("DB/String 3", "DriveSpeedMuli:" + Double.toString(DriveSpeedMuli));
     	double liftMotor = 0.0;
-    	
+    	double winchMotor = 0.0;
+    	double gateMotor = 0.0;
     	//DigitalInput di1 = new DigitalInput(1);
     	//DigitalInput di2 = new DigitalInput(2);
     	
@@ -124,6 +131,25 @@ public class Robot extends IterativeRobot {
     		SmartDashboard.putString("DB/String 5", "ButtonB:off");
     	}
     	
+    	if(xbutton) {
+    		gateMotor = 1.0;
+    		SmartDashboard.putString("DB/String 6", "ButtonX:on");
+    	}
+    	if(ybutton){ 
+    		gateMotor = -1.0;
+    		SmartDashboard.putString("DB/String 6", "ButtonY:on");
+    	}
+    	
+    	if(rightBump) {
+    		winchMotor = 1.0;
+    		SmartDashboard.putString("DB/String 7", "RB:on");
+    	}
+    	if(leftBump){ 
+    		winchMotor = -1.0;
+    		SmartDashboard.putString("DB/String 7", "LB:on");
+    	}
+    	
+    		
     	double leftStickValue =  0.0;
     	double rightStickValue =  0.0;
     	
@@ -157,6 +183,8 @@ public class Robot extends IterativeRobot {
     	rightFrontDrive.set(rightStickValue);
     	rightBackDrive.set(rightStickValue);
     	basketMotor.set(liftMotor);
+    	liftGate.set(gateMotor);
+    	winch.set(winchMotor);
     }
     
     
