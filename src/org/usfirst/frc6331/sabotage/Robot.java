@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 /**
  * 
  * The VM is configured to automatically run this class, and to call the
@@ -55,9 +56,7 @@ public class Robot extends IterativeRobot {
     DigitalInput bottomScissorSwitch1 = new DigitalInput(2);
     DigitalInput topScissorSwitch1 = new DigitalInput(3);
     
-    int GateDirections = 0; //0 = off, 1 = up, 2 = down;
-    int ScissoDirections = 0; //0 = off, 1 = up, 2 = down;
-    
+    int GateDirections = 0; //0 = off, 1 = up, 2 = down;    
     
     /**
      * This function is run when the robot is first started up and should be
@@ -165,16 +164,20 @@ public class Robot extends IterativeRobot {
     	
     	if(bbutton)
     	{
-    		ScissoDirections = 1;
+    		liftMotor = -0.8;
     		SmartDashboard.putString("B Button", "on");
+    	} else {
+    		liftMotor = 0.0;
     	}
     	
     	if(abutton) {
-    		ScissoDirections = 2;
+    		liftMotor = 0.8;
     		SmartDashboard.putString("A Button", "on");
+    	} else {
+    		liftMotor = 0.0;
     	}
     	
-    	if(bottomScissorSwitch2 && ScissoDirections == 2)
+    	/*if(bottomScissorSwitch2 && ScissoDirections == 2)
     	{
     		ScissoDirections = 0;
     	}
@@ -199,7 +202,7 @@ public class Robot extends IterativeRobot {
     	else
     	{
     		liftMotor = 0;
-    	}
+    	}*/
     	
     	if(dPad == 0)
     	{
@@ -264,7 +267,7 @@ public class Robot extends IterativeRobot {
     		
     	double leftMotorValue =  0.0;
     	double rightMotorValue =  0.0;
-    	double driveSpeed = 0.95;
+    	double driveSpeed = 0.;
     	
     	//enclose the 2 if statements below into 1 if statement that reads
     	//if leftjoystick x is between 0.1 and -0.1 do NOTHING

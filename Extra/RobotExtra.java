@@ -264,14 +264,14 @@ public class Robot extends IterativeRobot {
     		
     	double leftMotorValue =  0.0;
     	double rightMotorValue =  0.0;
-    	double driveSpeed = 0.85;
+    	double driveSpeed = 0.95;
     	
     	//enclose the 2 if statements below into 1 if statement that reads
     	//if leftjoystick x is between 0.1 and -0.1 do NOTHING
     	
     	//if (driveStick.getRawAxis(0) > 0.1 || driveStick.getRawAxis(0) < -0.1)
     	//{
-    		if(DriveSpeedMuli > 0 && CurrRightTrig > 0.1)
+    		if(DriveSpeedMuli > 0)
     		{
     			//leftStickValue = (driveStick.getRawAxis(1)/DriveSpeedMuli) * driveSpeed;
     			//rightStickValue = (driveStick.getRawAxis(5)/DriveSpeedMuli) * driveSpeed;
