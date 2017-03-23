@@ -65,7 +65,6 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	CameraServer.getInstance().startAutomaticCapture();
-    	CameraServer.getInstance().startAutomaticCapture(1);
     }
     
     /**
@@ -207,15 +206,15 @@ public class Robot extends IterativeRobot {
     	
     	if(dPad == 0)
     	{
-    		winch.set(0.6);
+    		winchMotor = 0.6;
     	}
     	else if(dPad == 180)
     	{
-    		winch.set(-0.6);
+    		winchMotor = -0.6;
     	}
     	else
     	{
-    		winch.set(0.0);
+    		winchMotor = 0.0;
     	}
     	
     	
