@@ -65,6 +65,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	CameraServer.getInstance().startAutomaticCapture();
+    	CameraServer.getInstance().startAutomaticCapture();
     }
     
     /**
@@ -166,15 +167,11 @@ public class Robot extends IterativeRobot {
     	{
     		liftMotor = -0.8;
     		SmartDashboard.putString("B Button", "on");
-    	} else {
-    		liftMotor = 0.0;
     	}
     	
     	if(abutton) {
     		liftMotor = 0.8;
     		SmartDashboard.putString("A Button", "on");
-    	} else {
-    		liftMotor = 0.0;
     	}
     	
     	/*if(bottomScissorSwitch2 && ScissoDirections == 2)
@@ -204,18 +201,19 @@ public class Robot extends IterativeRobot {
     		liftMotor = 0;
     	}*/
     	
-    	if(dPad == 0)
-    	{
+    	if(dPad == 0) {
     		winchMotor = 0.6;
-    	}
-    	else if(dPad == 180)
-    	{
-    		winchMotor = -0.6;
-    	}
-    	else
-    	{
+    	} else {
     		winchMotor = 0.0;
     	}
+    	
+    	if(dPad == 180) {
+    		winchMotor = -0.6;
+    	} else {
+    		winchMotor = 0.0;
+    	}
+    	
+    	
     	
     	
     	//***************************************************************************************
@@ -223,41 +221,15 @@ public class Robot extends IterativeRobot {
     	//******************************Gate Logic***********************************
     	
     	if(xbutton) {
-    		GateDirections = 2;
+    		gateMotor = 0.5;
     		SmartDashboard.putString("X Button", "on");
     	}
     	
     	if(ybutton){ 
-    		GateDirections = 1;
+    		gateMotor = -0.5;
     		SmartDashboard.putString("Y Button", "on");
     	}
-    	
-    	if(bottomGateSwitch2 && GateDirections == 2)
-    	{
-    		GateDirections = 0;
-    	}
-    	
-    	if(topGateSwitch2 && GateDirections == 1)
-    	{
-    		GateDirections = 0;
-    	}
-    	
-    	if (GateDirections !=  0)
-    	{
-    		if(GateDirections == 1)
-    		{
-    			gateMotor = -0.5;
-    		}
-    		
-    		if(GateDirections == 2)
-    		{
-    			gateMotor = 0.5;
-    		}
-    	}
-    	else
-    	{
-    		gateMotor = 0;
-    	}
+    
     	
     	//*******************************************************************************
     	
