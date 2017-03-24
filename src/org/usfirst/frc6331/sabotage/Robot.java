@@ -12,6 +12,7 @@
 package org.usfirst.frc6331.sabotage;
 
 import java.io.Console;
+import java.io.IOException;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -40,6 +41,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	
+	int Tick = 0;
     Joystick driveStick = new Joystick(0);
     //Joystick shootStick = new Joystick(2);
     //RobotDrive mainDrive = new RobotDrive(1, 2, 3, 4);
@@ -71,13 +74,19 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	ControlList cl = new ControlList("C:\\Users\\Vlad\\test.txt");
+		cl.LoadControlFile();
+		
+		if(cl.controltick.size() > Tick) {
+			ExecuteInput(cl.GetControlTick(Tick).RightTriger, cl.GetControlTick(Tick).LeftTriger, cl.GetControlTick(Tick).RightBumper, cl.GetControlTick(Tick).LeftBumper, cl.GetControlTick(Tick).Y, cl.GetControlTick(Tick).B, cl.GetControlTick(Tick).X, cl.GetControlTick(Tick).A, cl.GetControlTick(Tick).RightStick, cl.GetControlTick(Tick).LeftStick, cl.GetControlTick(Tick).DPad);
+		}
+		
+		
+		Tick++;
+		
     }
-
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
-    	
+    
+    public void testPeriodic() {
     	//double CurrLeftTrigger;
     	double CurrRightTrigger;
     	double CurrLeftTrigger;
@@ -116,6 +125,63 @@ public class Robot extends IterativeRobot {
     	boolean leftBump = driveStick.getRawButton(5);
     	boolean rightBump = driveStick.getRawButton(6);
     	int dPad = driveStick.getPOV();
+    	
+    	SmartDashboard.putString("CurrRight", Double.toString(CurrRight));
+    	SmartDashboard.putString("CurrLeft", Double.toString(CurrLeft));
+    	SmartDashboard.putString("CurrRightTrigger", Double.toString(CurrRightTrigger));
+    	SmartDashboard.putString("DriveSpeedMuli", Double.toString(DriveSpeedMuli));
+    	
+    	
+    	/*double liftMotor = 0.0;
+    	double winchMotor = 0.0;
+    	double gateMotor = 0.0;*/
+    	ExecuteInput(CurrRightTrigger, CurrLeftTrigger, rightBump, leftBump, ybutton, bbutton, xbutton, abutton, CurrRight, CurrLeft, dPad);
+    	
+    	ControlList cl = new ControlList("C:\\Users\\Vlad\\test.txt");
+		cl.AddControlTick(CurrRightTrigger, CurrLeftTrigger, rightBump, leftBump, ybutton, bbutton, xbutton, abutton, CurrRight, CurrLeft, dPad);
+		try {
+			cl.WriteControlFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	//DigitalInput di1 = new DigitalInput(1);
+    	//DigitalInput di2 = new DigitalInput(2);
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
+    public void ExecuteInput(double CurrRightTrigger, double CurrLeftTrigger, boolean rightBump, boolean leftBump, boolean ybutton, boolean bbutton, boolean xbutton, boolean abutton, double CurrRight, double CurrLeft, int dPad)
+    {
+
+    	
+    	//double DriveSpeedBase;
+    	double DriveSpeedMuli;
+    	
+    	//DriveSpeedBase = 2.5;
+    	
+    	CurrRight = driveStick.getRawAxis(5);
+    	CurrLeft = driveStick.getRawAxis(1);
+    	
+    	CurrRightTrigger = driveStick.getRawAxis(3);
+    	CurrLeftTrigger = driveStick.getRawAxis(2);
+    	
+    	DriveSpeedMuli = 0;
+    	
+    	if(CurrRightTrigger > 0)
+    	{
+    		DriveSpeedMuli = (CurrRightTrigger);
+    	
+    		//DriveSpeedMuli = DriveSpeedBase - DriveSpeedMuli;
+    	}
+    	
+    	if(CurrLeftTrigger > 0)
+    	{
+    		DriveSpeedMuli = -CurrLeftTrigger;
+    	
+    	}
+    	
     	
     	SmartDashboard.putString("CurrRight", Double.toString(CurrRight));
     	SmartDashboard.putString("CurrLeft", Double.toString(CurrLeft));
@@ -321,6 +387,255 @@ public class Robot extends IterativeRobot {
     	basketMotor.set(liftMotor);
     	liftGate.set(gateMotor);
     	climber.set(winchMotor);
+    }
+
+    
+    public void teleopPeriodic() {
+    	
+    	//double CurrLeftTrigger;
+    	double CurrRightTrigger;
+    	double CurrLeftTrigger;
+    	double CurrLeft;
+    	double CurrRight;
+    	//double DriveSpeedBase;
+    	double DriveSpeedMuli;
+    	
+    	//DriveSpeedBase = 2.5;
+    	
+    	CurrRight = driveStick.getRawAxis(5);
+    	CurrLeft = driveStick.getRawAxis(1);
+    	
+    	CurrRightTrigger = driveStick.getRawAxis(3);
+    	CurrLeftTrigger = driveStick.getRawAxis(2);
+    	
+    	DriveSpeedMuli = 0;
+    	
+    	if(CurrRightTrigger > 0)
+    	{
+    		DriveSpeedMuli = (CurrRightTrigger);
+    	
+    		//DriveSpeedMuli = DriveSpeedBase - DriveSpeedMuli;
+    	}
+    	
+    	if(CurrLeftTrigger > 0)
+    	{
+    		DriveSpeedMuli = -CurrLeftTrigger;
+    	
+    	}
+    	
+    	boolean abutton = driveStick.getRawButton(1);
+    	boolean bbutton = driveStick.getRawButton(2);
+    	boolean xbutton = driveStick.getRawButton(3);
+    	boolean ybutton = driveStick.getRawButton(4);
+    	boolean leftBump = driveStick.getRawButton(5);
+    	boolean rightBump = driveStick.getRawButton(6);
+    	int dPad = driveStick.getPOV();
+    	
+    	SmartDashboard.putString("CurrRight", Double.toString(CurrRight));
+    	SmartDashboard.putString("CurrLeft", Double.toString(CurrLeft));
+    	SmartDashboard.putString("CurrRightTrigger", Double.toString(CurrRightTrigger));
+    	SmartDashboard.putString("DriveSpeedMuli", Double.toString(DriveSpeedMuli));
+    	
+    	
+    	/*double liftMotor = 0.0;
+    	double winchMotor = 0.0;
+    	double gateMotor = 0.0;*/
+    	ExecuteInput(CurrRightTrigger, CurrLeftTrigger, rightBump, leftBump, ybutton, bbutton, xbutton, abutton, CurrRight, CurrLeft, dPad);
+    	//DigitalInput di1 = new DigitalInput(1);
+    	//DigitalInput di2 = new DigitalInput(2);
+    	
+    	/*boolean bottomGateSwitch2 = true;
+    	boolean topGateSwitch2 = true;
+    	boolean bottomScissorSwitch2 = true;
+    	boolean topScissorSwitch2 = true;*/
+    	
+    	/*bottomGateSwitch2 = !bottomGateSwitch1.get();
+    	topGateSwitch2 = !topGateSwitch1.get();
+    	bottomScissorSwitch2 = !bottomScissorSwitch1.get();
+    	topScissorSwitch2 = !topScissorSwitch1.get();*/
+    	
+    	/*
+    	if(bottomGateSwitch1.get()) { bottomGateSwitch2 = false;}
+    	else {bottomGateSwitch2 = true;}
+    	if(topGateSwitch1.get()) { topGateSwitch2 = false;}
+    	else {topGateSwitch2 = true;}
+    	if(bottomScissorSwitch1.get()) { bottomScissorSwitch2 = false;}
+    	else {bottomScissorSwitch2 = true;}
+    	if(topScissorSwitch1.get()) { topScissorSwitch2 = false;}
+    	else {topScissorSwitch2 = true;}
+    	*/
+    	
+    	
+    	
+    	
+    	
+    	
+    	/*if(rightBump) {
+    		winchMotor = 1.0;
+    		SmartDashboard.putString("Right Bumper", "on");
+    	}
+    	
+    	//******************************Scissor Logic***********************************
+    	
+    	if(bbutton)
+    	{
+    		liftMotor = -0.8;
+    		SmartDashboard.putString("B Button", "on");
+    	} else {
+    		liftMotor = 0.0;
+    	}
+    	
+    	if(abutton) {
+    		liftMotor = 0.8;
+    		SmartDashboard.putString("A Button", "on");
+    	} else {
+    		liftMotor = 0.0;
+    	}
+    	
+    	/*if(bottomScissorSwitch2 && ScissoDirections == 2)
+    	{
+    		ScissoDirections = 0;
+    	}
+    	
+    	if(topScissorSwitch2 && ScissoDirections == 1)
+    	{
+    		ScissoDirections = 0;
+    	}
+    	
+    	if (ScissoDirections !=  0)
+    	{
+    		if(ScissoDirections == 1)
+    		{
+    			liftMotor = -0.8;
+    		}
+    		
+    		if(ScissoDirections == 2)
+    		{
+    			liftMotor = 0.8;
+    		}
+    	}
+    	else
+    	{
+    		liftMotor = 0;
+    	}*/
+    	
+    	/*if(dPad == 0)
+    	{
+    		winchMotor = 0.6;
+    	}
+    	else if(dPad == 180)
+    	{
+    		winchMotor = -0.6;
+    	}
+    	else
+    	{
+    		winchMotor = 0.0;
+    	}
+    	
+    	
+    	//***************************************************************************************
+    	
+    	//******************************Gate Logic***********************************
+    	
+    	if(xbutton) {
+    		GateDirections = 2;
+    		SmartDashboard.putString("X Button", "on");
+    	}
+    	
+    	if(ybutton){ 
+    		GateDirections = 1;
+    		SmartDashboard.putString("Y Button", "on");
+    	}
+    	
+    	if(bottomGateSwitch2 && GateDirections == 2)
+    	{
+    		GateDirections = 0;
+    	}
+    	
+    	if(topGateSwitch2 && GateDirections == 1)
+    	{
+    		GateDirections = 0;
+    	}
+    	
+    	if (GateDirections !=  0)
+    	{
+    		if(GateDirections == 1)
+    		{
+    			gateMotor = -0.5;
+    		}
+    		
+    		if(GateDirections == 2)
+    		{
+    			gateMotor = 0.5;
+    		}
+    	}
+    	else
+    	{
+    		gateMotor = 0;
+    	}
+    	
+    	//*******************************************************************************
+    	
+    	/*
+    		liftMotor = 20.0 ;
+    	*/
+    		
+    	/*double leftMotorValue =  0.0;
+    	double rightMotorValue =  0.0;
+    	double driveSpeed = 0.;
+    	
+    	//enclose the 2 if statements below into 1 if statement that reads
+    	//if leftjoystick x is between 0.1 and -0.1 do NOTHING
+    	
+    	//if (driveStick.getRawAxis(0) > 0.1 || driveStick.getRawAxis(0) < -0.1)
+    	//{
+    		if(DriveSpeedMuli > 0)
+    		{
+    			//leftStickValue = (driveStick.getRawAxis(1)/DriveSpeedMuli) * driveSpeed;
+    			//rightStickValue = (driveStick.getRawAxis(5)/DriveSpeedMuli) * driveSpeed;
+    			rightMotorValue = (DriveSpeedMuli - (driveStick.getRawAxis(0) * 0.5))*0.5;
+    			leftMotorValue = (DriveSpeedMuli + (driveStick.getRawAxis(0) * 0.5))*0.5;
+    			rightMotorValue *= -driveSpeed;
+    			leftMotorValue *= -driveSpeed;
+    		}
+    		else if(DriveSpeedMuli < 0)
+    		{
+    			rightMotorValue = (DriveSpeedMuli - (driveStick.getRawAxis(0)* 0.5))*0.5;
+    			leftMotorValue = (DriveSpeedMuli + (driveStick.getRawAxis(0) * 0.5))*0.5;
+    			rightMotorValue *= -driveSpeed;
+    			leftMotorValue *= -driveSpeed;
+    		}
+    	//}
+    	
+    	/*if((CurrLeft > .80 & CurrRight > .80) || (CurrLeft < -.80 & CurrRight < -.80))
+    	{
+    		leftStickValue = driveStick.getRawAxis(1)/.5;
+    		rightStickValue = driveStick.getRawAxis(5)/.5;
+    	}
+    	else
+    	{
+    		leftStickValue = driveStick.getRawAxis(1)/2.0;
+    		rightStickValue = driveStick.getRawAxis(5)/2.0;
+    	}
+    	/*
+        /*mainDrive.mecanumDrive_Cartesian(driveStick.getAxis(Joystick.AxisType.kX),
+        driveStick.getAxis(Joystick.AxisType.kY),
+        driveStick.getAxis(Joystick.AxisType.kZ), 0);
+        mainDrive.tankDrive(driveStick,driveStick );*/
+    	/*
+    	SmartDashboard.putString("DB/String 0", "leftstick:" + Double.toString(leftStickValue));
+    	SmartDashboard.putString("DB/String 1", "right stick:" + Double.toString(rightStickValue));
+    	SmartDashboard.putString("DB/String 2", "lift:" + Double.toString(liftMotor));
+    	SmartDashboard.putString("DB/String 3", "gate:" + Double.toString(gateMotor));
+    	*/
+    	
+    	/*leftFrontDrive.set(-leftMotorValue);
+    	leftBackDrive.set(-leftMotorValue);
+    	rightFrontDrive.set(rightMotorValue);
+    	rightBackDrive.set(rightMotorValue);
+    	basketMotor.set(liftMotor);
+    	liftGate.set(gateMotor);
+    	climber.set(winchMotor);*/
     }
       
 }
