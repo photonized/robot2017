@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
@@ -72,6 +73,24 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	//autonomousInit();
+    }
+    
+    public void autonomousInit() {
+        	try {
+        		leftBackDrive.set(0.5);
+             	leftFrontDrive.set(0.5);
+             	rightFrontDrive.set(-0.5);
+             	rightBackDrive.set(-0.5);
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	leftBackDrive.set(0.0);
+        	leftFrontDrive.set(0.0);
+        	rightFrontDrive.set(0.0);
+        	rightBackDrive.set(0.0);
     }
 
     /**
@@ -85,7 +104,7 @@ public class Robot extends IterativeRobot {
     	double CurrLeft;
     	double CurrRight;
     	//double DriveSpeedBase;
-    	double DriveSpeedMuli;
+    	double DriveSpeedMulti;
     	
     	//DriveSpeedBase = 2.5;
     	
@@ -95,33 +114,39 @@ public class Robot extends IterativeRobot {
     	CurrRightTrigger = driveStick.getRawAxis(3);
     	CurrLeftTrigger = driveStick.getRawAxis(2);
     	
-    	DriveSpeedMuli = 0;
+    	boolean leftBump = driveStick.getRawButton(5);
+
+    	
+    	DriveSpeedMulti = 0;
     	
     	if(CurrRightTrigger > 0)
     	{
-    		DriveSpeedMuli = (CurrRightTrigger);
+    		DriveSpeedMulti = (CurrRightTrigger);
     	
-    		//DriveSpeedMuli = DriveSpeedBase - DriveSpeedMuli;
+    		//DriveSpeedMulti = DriveSpeedBase - DriveSpeedMulti;
     	}
     	
     	if(CurrLeftTrigger > 0)
     	{
-    		DriveSpeedMuli = -CurrLeftTrigger;
+    		DriveSpeedMulti = -CurrLeftTrigger;
     	
+    	}
+    	
+    	if (leftBump) {
+    		DriveSpeedMulti = -0.3;	
     	}
     	
     	boolean abutton = driveStick.getRawButton(1);
     	boolean bbutton = driveStick.getRawButton(2);
     	boolean xbutton = driveStick.getRawButton(3);
     	boolean ybutton = driveStick.getRawButton(4);
-    	boolean leftBump = driveStick.getRawButton(5);
     	boolean rightBump = driveStick.getRawButton(6);
     	int dPad = driveStick.getPOV();
     	
     	SmartDashboard.putString("CurrRight", Double.toString(CurrRight));
     	SmartDashboard.putString("CurrLeft", Double.toString(CurrLeft));
     	SmartDashboard.putString("CurrRightTrigger", Double.toString(CurrRightTrigger));
-    	SmartDashboard.putString("DriveSpeedMuli", Double.toString(DriveSpeedMuli));
+    	SmartDashboard.putString("DriveSpeedMulti", Double.toString(DriveSpeedMulti));
     	
     	
     	double liftMotor = 0.0;
@@ -155,9 +180,8 @@ public class Robot extends IterativeRobot {
     	
     	
     	
-    	
     	if(rightBump) {
-    		winchMotor = 1.0;
+    		winchMotor = 2.0;
     		SmartDashboard.putString("Right Bumper", "on");
     	}
     	
@@ -201,17 +225,11 @@ public class Robot extends IterativeRobot {
     		liftMotor = 0;
     	}*/
     	
-    	if(dPad == 0) {
-    		winchMotor = 0.6;
-    	} else {
-    		winchMotor = 0.0;
-    	}
+    	if(rightBump) {
+    		winchMotor = 2.0;
+    	} 
     	
-    	if(dPad == 180) {
-    		winchMotor = -0.6;
-    	} else {
-    		winchMotor = 0.0;
-    	}
+    	
     	
     	
     	
@@ -239,26 +257,46 @@ public class Robot extends IterativeRobot {
     		
     	double leftMotorValue =  0.0;
     	double rightMotorValue =  0.0;
-    	double driveSpeed = 0.;
+    	double driveSpeed = 1.0;
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			
+    			;
     	
     	//enclose the 2 if statements below into 1 if statement that reads
     	//if leftjoystick x is between 0.1 and -0.1 do NOTHING
     	
     	//if (driveStick.getRawAxis(0) > 0.1 || driveStick.getRawAxis(0) < -0.1)
     	//{
-    		if(DriveSpeedMuli > 0)
+    		if(DriveSpeedMulti > 0)
     		{
-    			//leftStickValue = (driveStick.getRawAxis(1)/DriveSpeedMuli) * driveSpeed;
-    			//rightStickValue = (driveStick.getRawAxis(5)/DriveSpeedMuli) * driveSpeed;
-    			rightMotorValue = (DriveSpeedMuli - (driveStick.getRawAxis(0) * 0.5))*0.5;
-    			leftMotorValue = (DriveSpeedMuli + (driveStick.getRawAxis(0) * 0.5))*0.5;
+    			//leftStickValue = (driveStick.getRawAxis(1)/DriveSpeedMulti) * driveSpeed;
+    			//rightStickValue = (driveStick.getRawAxis(5)/DriveSpeedMulti) * driveSpeed;
+    			rightMotorValue = (DriveSpeedMulti - (driveStick.getRawAxis(0) * 0.5))*0.5;
+    			leftMotorValue = (DriveSpeedMulti + (driveStick.getRawAxis(0) * 0.5))*0.5;
     			rightMotorValue *= -driveSpeed;
     			leftMotorValue *= -driveSpeed;
     		}
-    		else if(DriveSpeedMuli < 0)
+    		else if(DriveSpeedMulti < 0)
     		{
-    			rightMotorValue = (DriveSpeedMuli - (driveStick.getRawAxis(0)* 0.5))*0.5;
-    			leftMotorValue = (DriveSpeedMuli + (driveStick.getRawAxis(0) * 0.5))*0.5;
+    			rightMotorValue = (DriveSpeedMulti - (driveStick.getRawAxis(0)* 0.5))*0.5;
+    			leftMotorValue = (DriveSpeedMulti + (driveStick.getRawAxis(0) * 0.5))*0.5;
     			rightMotorValue *= -driveSpeed;
     			leftMotorValue *= -driveSpeed;
     		}
