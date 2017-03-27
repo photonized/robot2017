@@ -17,18 +17,54 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Constants extends IterativeRobot {
 	
+	/**
+	 * Joystick port
+	 */
 	public static Joystick driveStick = new Joystick(0);
 	
+	/**
+	 * The speed of the robot.
+	 */
 	public static double driveSpeed = 1.0;
-	
-	public static double winchSpeed = 1.0;
-	
-	public static double liftSpeed = 0.8;
-	
-	public static double gateSpeed = 1.0;
 
+	/**
+	 * Calling the motors for the drive train.
+	 */
 	public static Victor leftBackDrive = new Victor(0);
     public static Victor leftFrontDrive = new Victor(1);
     public static Victor rightFrontDrive = new Victor(3);
     public static Victor rightBackDrive = new Victor(2);
+    
+	/**
+	 * The speed of the winch.
+	 */
+	public static double winchSpeed = 1.0;
+	
+	/**
+	 * Calling the winch motor.
+	 */
+    public static Victor winch = new Victor(7);
+
+	/**
+	 * The speed of the lift.
+	 */
+	public static double liftSpeed = 0.8;
+	
+	/**
+	 * Calling the basket motor.
+	 */
+	public static Victor basketMotor = new Victor(4);
+
+	/**
+	 * The speed of the gate.
+	 */
+	public static double gateSpeed = 1.0;
+	
+	/**
+	 * Calling the gate motor.
+	 */
+	public static Victor liftGate = new Victor(5);
+
+
+	
 }

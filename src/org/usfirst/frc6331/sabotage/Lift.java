@@ -1,16 +1,10 @@
 package org.usfirst.frc6331.sabotage;
 
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift {
 	public static void lift() {
-	    
-		/**
-		 * Calling the motors.
-		 */
-		Victor basketMotor = new Victor(4);
-	    
+	       
 		/**
 		 * Calling the buttons.
 		 */
@@ -35,6 +29,6 @@ public class Lift {
     		liftSpeed = Constants.liftSpeed;
     		SmartDashboard.putString("A Button", "on");
     	}
-    	basketMotor.set(liftSpeed);
+    	Constants.basketMotor.set(liftSpeed);
 	}
 }

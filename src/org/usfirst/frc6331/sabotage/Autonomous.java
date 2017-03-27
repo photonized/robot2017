@@ -1,6 +1,8 @@
 package org.usfirst.frc6331.sabotage;
 
-public class Autonomous {
+import edu.wpi.first.wpilibj.IterativeRobot;
+
+public class Autonomous extends IterativeRobot{
 	public static void autoInit() {
     	try {
     		Constants.leftBackDrive.set(0.5);
