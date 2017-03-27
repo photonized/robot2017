@@ -64,7 +64,15 @@ public class Constants extends IterativeRobot {
 	 * Calling the gate motor.
 	 */
 	public static Victor liftGate = new Victor(5);
-
-
+	
+	/**
+	 * How long the forward goes.
+	 */
+	public static int autoForwardLength = 4000;
+	
+	/**
+	 * Autonomous speed
+	 */
+	public static double autoSpeed = 0.5;
 	
 }
